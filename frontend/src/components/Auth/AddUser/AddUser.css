@@ -1,0 +1,62 @@
+.container {
+    margin-top: 100px;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+   
+   
+  }
+  
+  
+  .input {
+    width: 80%;
+    padding: 12px 20px;
+    margin: 50px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .label {
+    margin-left: 20px;
+    margin-top: 30px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+  }
+  .label1 {
+    margin-left: 20px;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+  }
+  
+  .btn {
+    margin-left: 80px;
+    margin-top: 20px;
+    background-color: green;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    padding: 15px 32px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: red;
+  }
+  
+  .btn:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
