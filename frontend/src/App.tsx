@@ -1,6 +1,12 @@
 import * as React from "react";
 import "./App.css";
-import { Route, Link, Switch, RouteComponentProps, withRouter } from "react-router-dom";
+import {
+  Route,
+  Link,
+  Switch,
+  RouteComponentProps,
+  withRouter,
+} from "react-router-dom";
 // import { Provider } from "react-redux";
 
 import AddUser from "./components/Auth/AddUser/AddUser";
@@ -13,7 +19,7 @@ import EditQA from "./components/EditQA/EditQA";
 // import AddUser from "./Auth/AddUser/AddUser";
 // import DeleteUser from "./Auth/DeleteUser/DeleteUser";
 
-class App extends React.Component<RouteComponentProps <any, any, any>> {
+class App extends React.Component<RouteComponentProps<any, any, any>> {
   public render() {
     return (
       <div>
@@ -45,12 +51,22 @@ class App extends React.Component<RouteComponentProps <any, any, any>> {
           <Route path="/AddUser" element={<AddUser/>} /> */}
           {/* <Route path="/AddUser" />
           <Route path="/DeleteUser" /> */}
-           <Route path="/Users"><Users/> </Route>
-           <Route path="/AddUser"><AddUser/></Route>
-           <Route path="/EditUser"><EditUser/></Route>
-           <Route path="/QAList"><QAList/></Route> 
-           <Route path="/AddQA"><AddQA/></Route> 
-           <Route path="/EditQA"><EditQA/></Route>
+          <Route path="/Users">
+            <Users />{" "}
+          </Route>
+          <Route path="/AddUser">
+            <AddUser />
+          </Route>
+          <Route path="/EditUser/:id" component={EditUser} />
+          <Route path="/QAList">
+            <QAList />
+          </Route>
+          <Route path="/AddQA">
+            <AddQA />
+          </Route>
+          <Route path="/EditQA/:id" component={EditQA} />
+            
+          
         </Switch>
       </div>
     );

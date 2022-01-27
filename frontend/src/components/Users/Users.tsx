@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
-// import { getQAById } from "../../lib/axios";
-// import { deleteUser } from "../../lib/axios";
+
+import Swal from "sweetalert2";
 
 interface IState {
   users: any[];
@@ -15,42 +14,47 @@ export default class Users extends React.Component<any, IState> {
     this.state = { users: [] };
   }
   public componentDidMount(): void {
-   
     axios.get(`http://localhost:9000/app/allUsers`).then((data) => {
       this.setState({ users: data.data });
     });
   }
-  // public deleteUser(id: any) {
-  //   console.log("idUSEr ======== "+JSON.stringify(id))
-  //   axios.delete(`${`http://localhost:9000/app/deleteUser`}?id=${id}`).then(function (data) {
-  //     // handle success
-  //     console.log({ Users: data.data });
-  //     return data.data;
-  //   })
-    
-  // }
-  public deleteUser(id: any) {
-    axios.delete(`${`http://localhost:9000/app/deleteUser`}?id=${id}`).then(function (data) {
-      // handle success
-      console.log({ Users: data.data });
-      return data.data;
-    })
-    
-  // }
-    // then((data) => {
-    //   const index = this.state.users.findIndex((user) => user.id === id);
-    //   this.state.users.splice(index, 1);
-      // this.props.history.push("/");
-  //   });
-  // }
-// public deleteUser (id: any) {
-//     console.log("id = "+id);
-//     axios
-//       .delete(`${`http://localhost:9000/app/deleteUser`}?id=${id}`)
-//       .then(function (response) {
-//         // handle success
-//         console.log({ users: response.data });
-  }
+
+  deleteUser = (id: any) => {
+    let self = this;
+    Swal.fire({
+      title: "Are you sure you want to delete this user?",
+      // showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      // denyButtonText: `Don't save`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        axios
+          .delete(`${`http://localhost:9000/app/deleteUser`}?id=${id}`)
+          .then(function(data) {
+            const newUsers = self.state.users.filter(
+              (user: any) => user.id !== id
+            );
+            self.setState({ users: newUsers });
+            Swal.fire({
+              icon: "success",
+              title: "User has been deleted successfully",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "An error occured while deleting this user",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
+      }
+    });
+  };
   public render() {
     const users = this.state.users;
     return (
@@ -90,9 +94,9 @@ export default class Users extends React.Component<any, IState> {
                             </Link>
                             <button
                               className="btn btn-sm btn-outline-secondary"
-                              // onClick={() => this.deleteUser(user.id)}
-                               //@ts-ignore
-                               onClick={() => this.deleteUser(user.id)}>
+                              //@ts-ignore
+                              onClick={() => this.deleteUser(user.id)}
+                            >
                               Delete User
                             </button>
                           </div>

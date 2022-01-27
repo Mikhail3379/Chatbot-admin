@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import "./AddUser.css";
 import { v4 as uuidv4 } from "uuid";
 function AddUser() {
-  
   const [id, setId] = useState("");
-  const [public_key, setPublic_key] = useState("");
-
+    const [public_key, setPublic_key] = useState("");
+ 
   const submitForm = (event:any) => {
+    
+  
     event.preventDefault()
     let body = {
       id: uuidv4(),

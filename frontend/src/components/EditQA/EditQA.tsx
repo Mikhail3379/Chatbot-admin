@@ -1,138 +1,108 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { queryAllByAltText } from "@testing-library/react";
-
+import QA from "../QAList/QAList";
+import {getQAByID , updateQA} from "../../lib/endpoints";
 
 interface IState {
-  QA: any;
+  // id: any;
+  // public_key: any;
+  queAnsId: string;
+  queAnsData: any;
 }
 
-export default class EditQA extends React.Component<any, IState> {
+export default class editQA extends React.Component<any, IState> {
+  static question: string | number | readonly string[] | undefined;
+  static answer: string | number | readonly string[] | undefined;
   constructor(props: any) {
     super(props);
-    this.state = { QA:[] };
+    this.state = { queAnsId: "", queAnsData: {} };
   }
-  // public componentDidMount(): void {
-    public editQA(id: any, question: any, answer: any) {
-    axios.get(`${`http://localhost:9000/app/getQA`}?id=${id}`).then(function(data){
-      console.log({ QA: data.data });
-      return data.data
+  // editUser = (id: any, public_key: any) => {
+  //   axios
+  //     .put(`${`http://localhost:9000/app/updateUser`}?id=${id}`, {
+  //       public_key,
+  //     })
+  //     .then(function(data) {
+  //       // handle success
+  //       console.log({ Users: data.data });
+  //       return data.data;
+  //     });
+  // };
+
+  handleUpdateQA = () => {
+    const {id, question, answer} = this.state.queAnsData;
+    axios
+      .put(`${updateQA}?id=${id}`, {
+        question,
+        answer
+      })
+      .then(function(response) {
+        // handle success
+        console.log({ QA: response.data });
+        return response.data;
+      });
+  };
+  componentDidMount() {
+    const queAnsId = this.props.match.params.id;
+    this.setState({ queAnsId });
+    axios.get(`${getQAByID}?id=${queAnsId}`).then((response) => {
+      this.setState({ queAnsData: response.data[0] });
     });
   }
-  public updateQA(id: any, question:any, answer: any) {
-    axios.put(`${`http://localhost:9000/app/updateQA`}?id=${id}`, {question, answer}).then(function (data) {
-      // handle success
-      console.log({ QA: data.data });
-      return data.data;
-    })
-    
-  }
-
-
-
-
+  handleQChange = (event: any) => {
+    const value = event.target.value;
+    const queAns = { ...this.state.queAnsData };
+    queAns.question = value;
+    this.setState({ queAnsData: queAns });
+  };
+  handleAChange = (event: any) => {
+    const value = event.target.value;
+    const queAns = { ...this.state.queAnsData };
+    queAns.answer = value;
+    this.setState({ queAnsData: queAns });
+  };
   public render() {
-    const QA = this.state.QA;
+    // const id = this.state.id;
+    const { queAnsData } = this.state;
     return (
-      // <div>
-      //   {QA.length === 0 && (
-      //     <div className="text-center">
-      //       <h2>No data found at the moment</h2>
-      //     </div>
-//         )}
-//         <div className="container">
-//           <div className="row">
-//             <table className="table table-bordered">
-//               <thead className="thead-light">
-                // <tr>
-                //   <th scope="col">Chatbot Question</th>
-                //   <th scope="col">Chatbot Answer</th>
-                // </tr>
-//               </thead>
-//               <tbody>
-//                 {QA &&
-//                   QA.map((QA) => (
-//                     //  key={QA.id}
-//                       <input
-//                       value={QA.question}/>
-//                       <input
-//                       value={QA.answer}/>
-
-//                       // <td>
-//                       //   <div className="d-flex justify-content-between align-items-center">
-//                       //     <div
-//                       //       className="btn-group"
-//                       //       style={{ marginBottom: "20px" }}
-                          
-//                             </table>
-//                             <button
-//                               className="btn btn-sm btn-outline-secondary"
-//                                //@ts-ignore
-//                               onClick={this.editQA}>
-//                               Edit QA
-//                             </button>
-//                           </div>
-//                         </div>
-                      
-                    
-//                   ))}
-//               </tbody>
-//             {/* </table> */}
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-      //   {QA.length === 0 && (
-      //     <div className="text-center">
-      //       <h2>No data found at the moment</h2>
-      //     </div>
-      // )}
-
-<div className="container">
-      {/* <form onSubmit={submitForm}> */}
-        <label className="label">Edit Chatbot Question</label>
+      //
+      <div className="container">
+        {/* <form onSubmit={submitForm}> */} 
+         <label className="label">Edit Chatbot Question</label>
         <br />
-        {/* {QA &&
-                  QA.map((QA) => (
-                   question={QA.id}
-                  
-                  //@ts-ignore
-                  )}   */}
+
         <input
-          value={QA.question}
+          value={queAnsData.question}
           // onChange={(e) => setId(e.target.value)}
           type="text"
           // placeholder="Please enter user's ID"
           className="input"
+          onChange={this.handleQChange}
         />
-        
+
         <br />
         <label className="label">Edit Chatbot Answer</label>
         <br />
         <input
-          value={QA.answer}
+          value={queAnsData.answer}
           // onChange={(e) => setPublic_key(e.target.value)}
-        
-          
+
           type="text"
-          
           className="input"
+          onChange={this.handleAChange}
         />
-        
+
         <br />
-        <button type="submit" className="btn1"
-         
-                               //@ts-ignore
-                              onClick={this.editQA}>
+        <button
+          type="submit"
+          className="btn1"
+          //@ts-ignore
+          onClick={this.handleUpdateQA}
+        >
           Submit
         </button>
-                  
       </div>
-    )
-                  
+    );
   }
-  }
+}
