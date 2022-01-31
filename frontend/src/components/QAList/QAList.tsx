@@ -33,10 +33,10 @@ export default class QA extends React.Component<any, IState> {
         axios
           .delete(`${`http://localhost:9000/app/deleteQA`}?id=${id}`)
           .then(function(data) {
-            const newUsers = self.state.qa.filter(
+            const newQA = self.state.qa.filter(
               (queAns: any) => queAns.id != id
             );
-            // self.setState({ qa: newQa });
+             self.setState({ qa: newQA });
             Swal.fire({
               icon: "success",
               title: "Successfully deleted",
