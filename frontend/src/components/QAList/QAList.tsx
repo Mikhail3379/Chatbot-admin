@@ -36,7 +36,7 @@ export default class QA extends React.Component<any, IState> {
             const newQA = self.state.qa.filter(
               (queAns: any) => queAns.id != id
             );
-             self.setState({ qa: newQA });
+            self.setState({ qa: newQA });
             Swal.fire({
               icon: "success",
               title: "Successfully deleted",
@@ -64,6 +64,11 @@ export default class QA extends React.Component<any, IState> {
             <h2>No data found at the moment</h2>
           </div>
         )}
+        
+        <Link to={"/AddQA"}
+                            className="btn btn-sm btn-outline-secondary"
+                            > Add QA </Link>
+         
         <div className="container">
           <div className="row">
             <table className="table table-bordered">
@@ -99,6 +104,7 @@ export default class QA extends React.Component<any, IState> {
                             >
                               Delete QA
                             </button>
+                            
                           </div>
                         </div>
                       </td>
