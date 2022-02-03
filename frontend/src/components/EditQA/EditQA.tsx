@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import QA from "../QAList/QAList";
 import {getQAByID , updateQA} from "../../lib/endpoints";
+import Swal from "sweetalert2";
 
 interface IState {
-  // id: any;
-  // public_key: any;
+  
   queAnsId: string;
   queAnsData: any;
 }
@@ -18,17 +18,7 @@ export default class editQA extends React.Component<any, IState> {
     super(props);
     this.state = { queAnsId: "", queAnsData: {} };
   }
-  // editUser = (id: any, public_key: any) => {
-  //   axios
-  //     .put(`${`http://localhost:9000/app/updateUser`}?id=${id}`, {
-  //       public_key,
-  //     })
-  //     .then(function(data) {
-  //       // handle success
-  //       console.log({ Users: data.data });
-  //       return data.data;
-  //     });
-  // };
+  
 
   handleUpdateQA = () => {
     const {id, question, answer} = this.state.queAnsData;
@@ -38,6 +28,12 @@ export default class editQA extends React.Component<any, IState> {
         answer
       })
       .then(function(response) {
+        Swal.fire({
+          icon: "success",
+          title: "QA have been edited successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });  
         // handle success
         console.log({ QA: response.data });
         return response.data;
@@ -63,7 +59,7 @@ export default class editQA extends React.Component<any, IState> {
     this.setState({ queAnsData: queAns });
   };
   public render() {
-    // const id = this.state.id;
+    
     const { queAnsData } = this.state;
     return (
       //
@@ -76,7 +72,7 @@ export default class editQA extends React.Component<any, IState> {
           value={queAnsData.question}
           // onChange={(e) => setId(e.target.value)}
           type="text"
-          // placeholder="Please enter user's ID"
+          
           className="input"
           onChange={this.handleQChange}
         />
@@ -96,12 +92,15 @@ export default class editQA extends React.Component<any, IState> {
         <br />
         <button
           type="submit"
-          className="btn1"
+          className="btn"
           //@ts-ignore
           onClick={this.handleUpdateQA}
         >
           Submit
         </button>
+        <Link to={"/QAList"}
+                            className="btn btn-sm btn-outline-secondary"
+                            >QA List</Link>
       </div>
     );
   }
