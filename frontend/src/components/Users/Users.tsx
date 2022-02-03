@@ -64,6 +64,10 @@ export default class Users extends React.Component<any, IState> {
             <h2>No user found at the moment</h2>
           </div>
         )}
+               <Link to={"/AddUser"}
+                            className="btn btn-sm btn-outline-secondary"
+                            > Add User </Link>
+            
         <div className="container">
           <div className="row">
             <table className="table table-bordered">
@@ -99,6 +103,8 @@ export default class Users extends React.Component<any, IState> {
                             >
                               Delete User
                             </button>
+                            
+                            
                           </div>
                         </div>
                       </td>
