@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./AddUser.css";
 import { v4 as uuidv4 } from "uuid";
+import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 function AddUser() {
   const [id, setId] = useState("");
     const [public_key, setPublic_key] = useState("");
@@ -23,6 +25,13 @@ function AddUser() {
     try {
       fetch("http://localhost:9000/app/addUser", requestOptions)
         .then((response) => response.json())
+        Swal.fire({
+          icon: "success",
+          title: "User has been added successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+         
     } catch (error) {
       console.log(error);
     }
@@ -31,16 +40,7 @@ function AddUser() {
   return (
     <div className="container">
       <form onSubmit={submitForm}>
-        <label className="label">User's ID</label>
-        <br />
-        <input
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-          type="text"
-          placeholder="Please enter user's ID"
-          className="input"
-        />
-        <br />
+       
         <label className="label">Public key</label>
         <br />
         <input
@@ -51,9 +51,11 @@ function AddUser() {
           className="input"
         />
         <br />
-        <button type="submit" className="btn1">
-          Send
+        <button type="submit" className="btn"  >Add User
         </button>
+        <Link to={"/Users"}
+                            className="btn btn-sm btn-outline-secondary"
+                            > List of Users </Link>
       </form>
     </div>
   );
