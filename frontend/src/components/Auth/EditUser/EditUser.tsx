@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Users from "../../Users/Users";
 import { getUserByID, updateUser } from "../../../lib/endpoints";
+import Swal from "sweetalert2";
 
 interface IState {
-  // id: any;
-  // public_key: any;
+ 
   userId: string;
   userData: any;
 }
@@ -18,17 +18,7 @@ export default class editUser extends React.Component<any, IState> {
     super(props);
     this.state = { userId: "", userData: {} };
   }
-  // editUser = (id: any, public_key: any) => {
-  //   axios
-  //     .put(`${`http://localhost:9000/app/updateUser`}?id=${id}`, {
-  //       public_key,
-  //     })
-  //     .then(function(data) {
-  //       // handle success
-  //       console.log({ Users: data.data });
-  //       return data.data;
-  //     });
-  // };
+  
 
   handleUpdateUser = () => {
     const { id, public_key } = this.state.userData;
@@ -37,9 +27,16 @@ export default class editUser extends React.Component<any, IState> {
         public_key,
       })
       .then(function(response) {
+        Swal.fire({
+          icon: "success",
+          title: "User has been edited successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });  
         // handle success
         console.log({ Users: response.data });
         return response.data;
+        
       });
   };
   componentDidMount() {
@@ -56,23 +53,12 @@ export default class editUser extends React.Component<any, IState> {
     this.setState({ userData: user });
   };
   public render() {
-    // const id = this.state.id;
+    
     const { userData } = this.state;
     return (
-      //
+      
       <div className="container">
-        {/* <form onSubmit={submitForm}> */}
-        {/* <label className="label">Edit User's ID</label>
-        <br />
-
-        <input
-          value={userData.id}
-          // onChange={(e) => setId(e.target.value)}
-          type="text"
-          // placeholder="Please enter user's ID"
-          className="input"
-          onChange={this.handleIdChange}
-        /> */}
+       
 
         <br />
         <label className="label">Edit User's public key</label>
@@ -89,12 +75,15 @@ export default class editUser extends React.Component<any, IState> {
         <br />
         <button
           type="submit"
-          className="btn1"
+          className="btn "
           //@ts-ignore
           onClick={this.handleUpdateUser}
         >
           Submit
         </button>
+        <Link to={"/Users"}
+                            className="btn btn-sm btn-outline-secondary"
+                            > List of Users </Link>
       </div>
     );
   }
