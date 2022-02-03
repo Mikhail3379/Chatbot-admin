@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./AddQA.css";
 import { v4 as uuidv4 } from "uuid";
+import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 function AddQA() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -12,17 +14,7 @@ function AddQA() {
       question,
       answer,
     };
-    // fetch("http://localhost:8000/app/addChatbot", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json",
-    //     // "Access-Control-Allow-Origin": "http://localhost:3000",
-    //   },
-    //   body: JSON.stringify(body),
-    // }).then((data) => {
-    //   console.info(data);
-    // });
+    
 
     const requestOptions = {
       method: "POST",
@@ -32,6 +24,12 @@ function AddQA() {
     try {
       fetch("http://localhost:9000/app/addQA", requestOptions)
         .then((response) => response.json())
+        Swal.fire({
+          icon: "success",
+          title: "QA have been added successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });  
     } catch (error) {
       console.log(error);
     }
@@ -60,9 +58,12 @@ function AddQA() {
           className="input"
         />
         <br />
-        <button type="submit" className="btn1">
-          Send
+        <button type="submit" className="btn btn-sm btn-outline-secondary">
+          Add QA
         </button>
+        <Link to={"/QAList"}
+                            className="btn btn-sm btn-outline-secondary"
+                            >QA List</Link>
       </form>
     </div>
   );
