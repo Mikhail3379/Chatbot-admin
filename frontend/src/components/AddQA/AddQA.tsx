@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import "./AddQA.css";
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function AddQA() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-
+  const navigate = useNavigate()
   const submitForm = (event:any) => {
     event.preventDefault()
     let body = {
@@ -14,7 +14,9 @@ function AddQA() {
       question,
       answer,
     };
-   const requestOptions = {
+    
+
+    const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -27,7 +29,8 @@ function AddQA() {
           title: "QA have been added successfully",
           showConfirmButton: false,
           timer: 1500,
-        });  
+        }); 
+        navigate("/QAList");
     } catch (error) {
       console.log(error);
     }
@@ -59,9 +62,7 @@ function AddQA() {
         <button type="submit" className="btn btn-sm btn-outline-secondary">
           Add QA
         </button>
-        <Link to={"/QAList"}
-                            className="btn btn-sm btn-outline-secondary"
-                            >QA List</Link>
+        
       </form>
     </div>
   );
