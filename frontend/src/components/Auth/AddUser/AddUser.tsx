@@ -1,21 +1,21 @@
 import React, { useState } from "react";
+
 import "./AddUser.css";
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 function AddUser() {
-  const [id, setId] = useState("");
-    const [public_key, setPublic_key] = useState("");
- 
-  const submitForm = (event:any) => {
-    
-  
-    event.preventDefault()
+  // const [id, setId] = useState("");
+
+  const navigate = useNavigate();
+  const [public_key, setPublic_key] = useState("");
+  // const history = useHistory();
+  const submitForm = (event: any) => {
+    event.preventDefault();
     let body = {
       id: uuidv4(),
-      public_key
+      public_key,
     };
-    
 
     const requestOptions = {
       method: "POST",
@@ -23,15 +23,19 @@ function AddUser() {
       body: JSON.stringify(body),
     };
     try {
-      fetch("http://localhost:9000/app/addUser", requestOptions)
-        .then((response) => response.json())
-        Swal.fire({
-          icon: "success",
-          title: "User has been added successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-         
+      fetch(
+        "http://localhost:9000/app/addUser",
+        requestOptions
+      ).then((response) => response.json());
+      Swal.fire({
+        icon: "success",
+        title: "User has been added successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/Users");
+      // history.go(-1)
+      // history.push('/Users')
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +44,6 @@ function AddUser() {
   return (
     <div className="container">
       <form onSubmit={submitForm}>
-       
         <label className="label">Public key</label>
         <br />
         <input
@@ -51,11 +54,10 @@ function AddUser() {
           className="input"
         />
         <br />
-        <button type="submit" className="btn"  >Add User
+        <button type="submit" className="btn">
+          Add User
         </button>
-        <Link to={"/Users"}
-                            className="btn btn-sm btn-outline-secondary"
-                            > List of Users </Link>
+        
       </form>
     </div>
   );
