@@ -3,11 +3,10 @@ import "./App.css";
 import {
   Route,
   Link,
-  Switch,
-  RouteComponentProps,
-  withRouter,
+  Routes,
+  
 } from "react-router-dom";
-// import { Provider } from "react-redux";
+
 
 import AddUser from "./components/Auth/AddUser/AddUser";
 import EditUser from "./components/Auth/EditUser/EditUser";
@@ -16,10 +15,9 @@ import QAList from "./components/QAList/QAList";
 import Users from "./components/Users/Users";
 import AddQA from "./components/AddQA/AddQA";
 import EditQA from "./components/EditQA/EditQA";
-// import AddUser from "./Auth/AddUser/AddUser";
-// import DeleteUser from "./Auth/DeleteUser/DeleteUser";
 
-class App extends React.Component<RouteComponentProps<any, any, any>> {
+
+class App extends React.Component {
   public render() {
     return (
       <div>
@@ -28,48 +26,28 @@ class App extends React.Component<RouteComponentProps<any, any, any>> {
             <li>
               <Link to={"/Users"}> Users </Link>
             </li>
-            <li>
-              <Link to={"/AddUser"}> Add User </Link>
-            </li>
-            <li>
-              <Link to={"/EditUser"}> Edit User </Link>
-            </li>
+
             <li>
               <Link to={"/QAList"}> QA List </Link>
             </li>
-            <li>
-              <Link to={"/AddQA"}> Add QA </Link>
-            </li>
-
-            <li>
-              <Link to={"/EditQA"}> Edit QA </Link>
-            </li>
           </ul>
         </nav>
-        <Switch>
-          {/* <Route path="/Home" element={<Home/>} />
-          <Route path="/AddUser" element={<AddUser/>} /> */}
-          {/* <Route path="/AddUser" />
-          <Route path="/DeleteUser" /> */}
-          <Route path="/Users">
-            <Users />{" "}
-          </Route>
-          <Route path="/AddUser">
-            <AddUser />
-          </Route>
-          <Route path="/EditUser/:id" component={EditUser} />
-          <Route path="/QAList">
-            <QAList />
-          </Route>
-          <Route path="/AddQA">
-            <AddQA />
-          </Route>
-          <Route path="/EditQA/:id" component={EditQA} />
-            
+        <Routes>
           
-        </Switch>
+          <Route path="/Users" element={<Users />} />
+
+          <Route path="/AddUser" element={<AddUser />} />
+
+          <Route path="/Users/editUser/:id" element={<EditUser />} />
+          <Route path="/QAList" element={<QAList />} />
+
+          <Route path="/AddQA" element={<AddQA />} />
+
+          <Route path="/QAList/editQA/:id" element={<EditQA />} />
+          <Route path="*" element={<h1>404 page not found</h1>} />
+        </Routes>
       </div>
     );
   }
 }
-export default withRouter(App);
+export default App;
