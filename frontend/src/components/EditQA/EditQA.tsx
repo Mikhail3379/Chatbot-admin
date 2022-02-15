@@ -1,107 +1,84 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import QA from "../QAList/QAList";
-import {getQAByID , updateQA} from "../../lib/endpoints";
+import Users from "../../Users/Users";
+import { getUserByID, updateUser } from "../../../lib/endpoints";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
-interface IState {
-  
-  queAnsId: string;
-  queAnsData: any;
-}
+// interface IState {
+//   userId: string;
+//   userData: any;
+// }
 
-export default class editQA extends React.Component<any, IState> {
-  static question: string | number | readonly string[] | undefined;
-  static answer: string | number | readonly string[] | undefined;
-  constructor(props: any) {
-    super(props);
-    this.state = { queAnsId: "", queAnsData: {} };
-  }
-  
+export default function EditUser() {
+  const { id: userId } = useParams();
+  const [userData, setUserData] = useState<any>({});
+  const navigate=useNavigate()
+  // export default class editUser extends React.Component<any, IState> {
 
-  handleUpdateQA = () => {
-    const {id, question, answer} = this.state.queAnsData;
+  // static id: string | number | readonly string[] | undefined;
+  // static public_key: string | number | readonly string[] | undefined;
+
+  const handleUpdateUser = () => {
+    const { id, public_key } = userData;
     axios
-      .put(`${updateQA}?id=${id}`, {
-        question,
-        answer
+      .put(`${updateUser}?id=${id}`, {
+        public_key,
       })
       .then(function(response) {
         Swal.fire({
           icon: "success",
-          title: "QA have been edited successfully",
+          title: "User has been edited successfully",
           showConfirmButton: false,
           timer: 1500,
-        });  
+        });
         // handle success
-        console.log({ QA: response.data });
+        console.log({ Users: response.data });
+        navigate("/Users")
+        // window.location.assign("#/Users");
         return response.data;
       });
   };
-  componentDidMount() {
-    const queAnsId = this.props.match.params.id;
-    this.setState({ queAnsId });
-    axios.get(`${getQAByID}?id=${queAnsId}`).then((response) => {
-      this.setState({ queAnsData: response.data[0] });
+  useEffect(() => {
+    // const userId = this.props.match.params.id;
+
+    axios.get(`${getUserByID}?id=${userId}`).then((response) => {
+      setUserData(response.data[0]);
     });
-  }
-  handleQChange = (event: any) => {
+  }, []);
+
+  const handlePublicKeyChange = (event: any) => {
     const value = event.target.value;
-    const queAns = { ...this.state.queAnsData };
-    queAns.question = value;
-    this.setState({ queAnsData: queAns });
+    const user = { ...userData };
+    user.public_key = value;
+    setUserData(user);
   };
-  handleAChange = (event: any) => {
-    const value = event.target.value;
-    const queAns = { ...this.state.queAnsData };
-    queAns.answer = value;
-    this.setState({ queAnsData: queAns });
-  };
-  public render() {
-    
-    const { queAnsData } = this.state;
-    return (
-      //
-      <div className="container">
-        {/* <form onSubmit={submitForm}> */} 
-         <label className="label">Edit Chatbot Question</label>
-        <br />
 
-        <input
-          value={queAnsData.question}
-          // onChange={(e) => setId(e.target.value)}
-          type="text"
-          
-          className="input"
-          onChange={this.handleQChange}
-        />
+  return (
+    <div className="container">
+      <br />
+      <label className="label">Edit User's public key</label>
+      <br />
+      <input
+        value={userData?.public_key}
+        // onChange={(e) => setPublic_key(e.target.value)}
 
-        <br />
-        <label className="label">Edit Chatbot Answer</label>
-        <br />
-        <input
-          value={queAnsData.answer}
-          // onChange={(e) => setPublic_key(e.target.value)}
+        type="text"
+        className="input"
+        onChange={handlePublicKeyChange}
+      />
 
-          type="text"
-          className="input"
-          onChange={this.handleAChange}
-        />
-
-        <br />
-        <button
-          type="submit"
-          className="btn"
-          //@ts-ignore
-          onClick={this.handleUpdateQA}
-        >
-          Submit
-        </button>
-        <Link to={"/QAList"}
-                            className="btn btn-sm btn-outline-secondary"
-                            >QA List</Link>
-      </div>
-    );
-  }
+      <br />
+      <button
+        type="submit"
+        className="btn "
+        //@ts-ignore
+        onClick={handleUpdateUser}
+      >
+        Submit
+      </button>
+      
+    </div>
+  );
 }
