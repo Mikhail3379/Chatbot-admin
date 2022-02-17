@@ -6,8 +6,6 @@ import {
   Routes,
   
 } from "react-router-dom";
-
-
 import AddUser from "./components/Auth/AddUser/AddUser";
 import EditUser from "./components/Auth/EditUser/EditUser";
 
@@ -15,7 +13,6 @@ import QAList from "./components/QAList/QAList";
 import Users from "./components/Users/Users";
 import AddQA from "./components/AddQA/AddQA";
 import EditQA from "./components/EditQA/EditQA";
-
 
 class App extends React.Component {
   public render() {
