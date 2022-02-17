@@ -1,84 +1,97 @@
 import * as React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import Users from "../../Users/Users";
-import { getUserByID, updateUser } from "../../../lib/endpoints";
+import QA from "../QAList/QAList";
+import {getQAByID , updateQA} from "../../lib/endpoints";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 
-// interface IState {
-//   userId: string;
-//   userData: any;
-// }
-
-export default function EditUser() {
-  const { id: userId } = useParams();
-  const [userData, setUserData] = useState<any>({});
+export default function EditQA () {
+  const { id: queAnsId } = useParams();
+  const [queAnsData, setQueAnsData] = useState<any>({});
   const navigate=useNavigate()
-  // export default class editUser extends React.Component<any, IState> {
+  
+  
 
-  // static id: string | number | readonly string[] | undefined;
-  // static public_key: string | number | readonly string[] | undefined;
-
-  const handleUpdateUser = () => {
-    const { id, public_key } = userData;
+  const handleUpdateQA = () => {
+    const {id, question, answer} = queAnsData;
+    console.log(id, question,answer,queAnsId)
     axios
-      .put(`${updateUser}?id=${id}`, {
-        public_key,
+      .put(`${updateQA}?id=${queAnsId}`, {
+        question,
+        answer
       })
       .then(function(response) {
         Swal.fire({
           icon: "success",
-          title: "User has been edited successfully",
+          title: "QA have been edited successfully",
           showConfirmButton: false,
           timer: 1500,
-        });
+        });  
         // handle success
-        console.log({ Users: response.data });
-        navigate("/Users")
-        // window.location.assign("#/Users");
+        console.log({ QA: response.data });
+        navigate("/QAList")
         return response.data;
       });
   };
-  useEffect(() => {
-    // const userId = this.props.match.params.id;
-
-    axios.get(`${getUserByID}?id=${userId}`).then((response) => {
-      setUserData(response.data[0]);
+ useEffect(() => {
+   
+    axios.get(`${getQAByID}?id=${queAnsId}`).then((response) => {
+      setQueAnsData(response.data[0] );
     });
-  }, []);
-
-  const handlePublicKeyChange = (event: any) => {
+  },[]);
+  const handleQChange = (event:any) => {
     const value = event.target.value;
-    const user = { ...userData };
-    user.public_key = value;
-    setUserData(user);
+    const queAns = { ...queAnsData };
+    queAns.question = value;
+    setQueAnsData(queAns);
   };
+  const handleAChange = (event:any) => {
+    const value = event.target.value;
+    const queAns = { ...queAnsData };
+    queAns.answer = value;
+    setQueAnsData(queAns);
+  };
+ 
+    return (
+      //
+      <div className="container">
+        {/* <form onSubmit={submitForm}> */} 
+         <label className="label">Edit Chatbot Question</label>
+        <br />
 
-  return (
-    <div className="container">
-      <br />
-      <label className="label">Edit User's public key</label>
-      <br />
-      <input
-        value={userData?.public_key}
-        // onChange={(e) => setPublic_key(e.target.value)}
+        <input
+          value={queAnsData?.question}
+          // onChange={(e) => setId(e.target.value)}
+          type="text"
+          
+          className="input"
+          onChange={handleQChange}
+        />
 
-        type="text"
-        className="input"
-        onChange={handlePublicKeyChange}
-      />
+        <br />
+        <label className="label">Edit Chatbot Answer</label>
+        <br />
+        <input
+          value={queAnsData?.answer}
+          // onChange={(e) => setPublic_key(e.target.value)}
 
-      <br />
-      <button
-        type="submit"
-        className="btn "
-        //@ts-ignore
-        onClick={handleUpdateUser}
-      >
-        Submit
-      </button>
-      
-    </div>
-  );
-}
+          type="text"
+          className="input"
+          onChange={handleAChange}
+        />
+
+        <br />
+        <button
+          type="submit"
+          className="btn"
+          //@ts-ignore
+          onClick={handleUpdateQA}
+        >
+          Submit
+        </button>
+        
+      </div>
+    );
+  }
+
