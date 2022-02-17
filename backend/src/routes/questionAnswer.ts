@@ -61,12 +61,5 @@ router.get("/app/getQA", (req, res, next) => {
     .catch(next);
 });
 
-// get request:
-// get all q-a
-// get q-a by id
-// put
-// update q-a :id {question,answer}
-// delete
-// delete q-a : id
 
 export { router as questionAnswerRouter };
