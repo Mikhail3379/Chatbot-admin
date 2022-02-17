@@ -5,9 +5,6 @@ import Users from "../../Users/Users";
 import { getUserByID, updateUser } from "../../../lib/endpoints";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-
-
-
 export default function EditUser() {
   const { id: userId } = useParams();
   const [userData, setUserData] = useState<any>({});
