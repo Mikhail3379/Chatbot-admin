@@ -18,9 +18,9 @@ export const getQAById = (id: any) => {
     });
 };
 
-export const updateQA = (id: any, question: any, answer: any) => {
+export const updateQA = (queAnsId: any, question: any, answer: any) => {
     axios
-      .put(`${updateUser}?id=${id}`, {
+      .put(`${updateQA}?id=${queAnsId}`, {
           question,
           answer
       })
